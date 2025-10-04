@@ -122,6 +122,14 @@ const App = () => {
     // Setup audio with Hindi happy birthday song
     audioRef.current = new Audio('https://www.itsbirthdayy.com/wp-content/uploads/2023/02/Hindi-happy-birthday-song.mp3');
     audioRef.current.loop = true;
+    audioRef.current.preload = 'auto';
+    audioRef.current.load();
+
+    // Handle audio load errors
+    audioRef.current.onerror = () => {
+      console.error('Failed to load audio:', audioRef.current.src);
+      setMessages((prev) => [...prev, "Oops, couldn't load the Hindi birthday tune. Try refreshing! 🔄"]);
+    };
 
     // Debug log for twins rendering
     console.log('Rendering twins:', twins.length, 'items'); // Should log 2
@@ -129,7 +137,7 @@ const App = () => {
     return () => {
       clearInterval(interval);
     };
-  }, []);
+  }, [birthdayMessages.length, twins.length]);
 
   const handleTwinClick = (index) => {
     const twin = twins[index];
